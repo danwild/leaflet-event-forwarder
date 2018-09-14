@@ -1,6 +1,6 @@
 {
   "name": "leaflet-event-forwarder",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Catches unhandled canvas layer events and re-dispatches them to the next layer in the stack",
   "main": "dist/leaflet-event-forwarder.js",
   "scripts": {

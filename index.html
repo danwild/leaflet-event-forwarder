@@ -76,11 +76,11 @@
 
 	const aRenderer = L.canvas({ padding: 0.5, pane: 'aPane' });
 	const aPane = map.createPane('aPane', container);
-	const aLayer = L.polygon(aPoints, { color: 'red', renderer: aRenderer }).bindTooltip('I\'m red, bottom').bindPopup('I\'m red, bottom');
+	const aLayer = L.polygon(aPoints, { color: 'red', renderer: aRenderer }).bindTooltip('I\'m a red tooltip, one the bottom').bindPopup('I\'m a red popup, one the bottom');
 
 	const bRenderer = L.svg({ padding: 0.5, pane: 'bPane' });
 	const bPane = map.createPane('bPane', container);
-	const bLayer = L.polygon(bPoints, { color: 'green', renderer: bRenderer }).bindTooltip('I\'m green, middle').bindPopup('I\'m green, middle');
+	const bLayer = L.polygon(bPoints, { color: 'green', renderer: bRenderer }).bindTooltip('I\'m a green tooltip, middle').bindPopup('I\'m a green tooltip, middle');
 
 	const cRenderer = L.canvas({ padding: 0.5, pane: 'cPane' });
 	const cPane = map.createPane('cPane', container);
