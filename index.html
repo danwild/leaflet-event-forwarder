@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>L.EventForwarder Demo</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"/>
+	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+	<script src="dist/leaflet-event-forwarder.js"></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+
+		#map {
+			width: 100%;
+			height: 60%;
+		}
+	</style>
+
+</head>
+<body>
+
+<h1>L.EventForwarder Demo</h1>
+<h4>Unhandled events are forwarded to the next in the stack.</h4>
+<p>What is happening:</p>
+<ul>
+	<li>
+		The <strong>BLUE</strong> polygon is a <strong>CANVAS</strong> layer which would usually mask all
+		those below it, however because it is not handling/intercepting events <code>L.eventForwarder</code>
+		is passing them to the next in the stack.
+	</li>
+	<li>
+		The <strong>GREEN</strong> polygon is a <strong>SVG</strong> layer,
+		which exists in the DOM and only masks the red layer where the polygon covers it.
+	</li>
+	<li>
+		The <strong>RED</strong> polygon is a <strong>CANVAS</strong> layer which has a click event
+		handler, and receives all events forwarded from <strong>BLUE</strong> that don't hit <strong>GREEN</strong>.
+	</li>
+</ul>
+<p></p>
+
+<div id='map'></div>
+
+<script>
+
+	let aPoints = [[-43.96119063892024,110.12695312499999],[-43.96119063892024,160.400390625],[-10.487811882056683,160.400390625],[-10.487811882056683,110.12695312499999],[-43.96119063892024,110.12695312499999]];
+	let bPoints = [[-18.646245142670598,134.033203125],[-27.215556209029675,126.474609375],[-27.449790329784214,140.625],[-18.646245142670598,134.033203125]];
+	let cPoints = [[-47.93106634750977,115.48828125000001],[-47.93106634750977,154.423828125],[-13.838079936422462,154.423828125],[-13.838079936422462,115.48828125000001],[-47.93106634750977,115.48828125000001]];
+
+	const map = L.map("map");
+
+	// prepare a container to hold our z stackable layer panes
+	const container = map.createPane('stack-container');
+	const myEventForwarder = new L.eventForwarder({
+		map:    map,
+		containerName: 'stack-container',
+		events: {
+			click: true,
+			mousemove: true
+		},
+		throttleMs: 100,
+		throttleOptions: {
+			leading: true,
+			trailing: false
+		}
+	});
+
+	myEventForwarder.enable();
+
+	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(map);
+	map.setView([-25, 133], 4);
+
+	const aRenderer = L.canvas({ padding: 0.5, pane: 'aPane' });
+	const aPane = map.createPane('aPane', container);
+	const aLayer = L.polygon(aPoints, { color: 'red', renderer: aRenderer }).bindTooltip('I\'m red, bottom').bindPopup('I\'m red, bottom');
+
+	const bRenderer = L.svg({ padding: 0.5, pane: 'bPane' });
+	const bPane = map.createPane('bPane', container);
+	const bLayer = L.polygon(bPoints, { color: 'green', renderer: bRenderer }).bindTooltip('I\'m green, middle').bindPopup('I\'m green, middle');
+
+	const cRenderer = L.canvas({ padding: 0.5, pane: 'cPane' });
+	const cPane = map.createPane('cPane', container);
+	const cLayer = L.polygon(cPoints, { color: 'blue', renderer: cRenderer });//.bindTooltip('I\'m blue, top');
+
+	var baseLayers = {};
+	var overlays = {};
+	const layerControl = L.control.layers(baseLayers, overlays, { sortLayers: false }).addTo(map);
+
+	layerControl.addOverlay(cLayer, "C Canvas (top, blue)");
+	layerControl.addOverlay(bLayer, "B SVG (middle, green)");
+	layerControl.addOverlay(aLayer, "A Canvas (bottom, red)");
+
+</script>
+
+
+</body>
+</html>

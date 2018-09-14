@@ -1,0 +1,37 @@
+{
+  "name": "leaflet-event-forwarder",
+  "version": "0.0.0",
+  "description": "Catches unhandled canvas layer events and re-dispatches them to the next layer in the stack",
+  "main": "dist/leaflet-event-forwarder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danwild/leaflet-event-forwarder.git"
+  },
+  "keywords": [
+    "leaflet",
+    "canvas",
+    "leaflet-plugin",
+    "events"
+  ],
+  "author": "danwild@y7mail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/danwild/leaflet-event-forwarder/issues"
+  },
+  "homepage": "https://github.com/danwild/leaflet-event-forwarder#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^6.1.2",
+    "rollup": "^0.63.4",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0"
+  },
+  "peerDependencies": {
+    "leaflet": "^1.3.0"
+  }
+}
