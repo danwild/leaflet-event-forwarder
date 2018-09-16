@@ -7,17 +7,16 @@
 	L = L && L.hasOwnProperty('default') ? L['default'] : L;
 
 	let _options;
-	let _container;
 	let _prevTarget = null;
 
 	const EventForwarder = L.Class.extend({
 
 		initialize: function (options) {
 			_options = options;
+			if (!_options.containerName) _options.containerName = 'overlay';
 		},
 
 		enable: function () {
-			_container = document.getElementsByClassName(`leaflet-${_options.containerName}-pane`)[0];
 			if (_options.events.click === true) L.DomEvent.on(_options.map, 'click', this._handleClick, this);
 			if (_options.events.mousemove === true) {
 				L.DomEvent.on(_options.map, 'mousemove', this._throttle(this._handleMouseMove, _options.throttleMs, _options.throttleOptions), this);
@@ -28,7 +27,16 @@
 			L.DomEvent.off(_options.map, 'click', this._handleClick, this);
 		},
 
+		/**
+	  * Handle `mousemove` event from map, i.e. forwards unhandled events
+	  * @param event
+	  * @private
+	  */
 		_handleMouseMove: function (event) {
+
+			// we use the maps mousemove event to avoid registering listeners
+			// for each individual layer, however this means we don't receive
+			// the layers mouseover/out events so we need to fudge it a little
 
 			if (event.originalEvent._stopped) {
 				return;
@@ -47,7 +55,7 @@
 			const nextTarget = document.elementFromPoint(event.originalEvent.clientX, event.originalEvent.clientY);
 			const isCanvas = nextTarget.nodeName.toLowerCase() === 'canvas';
 
-			// mouseout previous
+			// target has changed so trigger mouseout previous
 			if (_prevTarget && _prevTarget != nextTarget) {
 				_prevTarget.dispatchEvent(new MouseEvent('mouseout', event.originalEvent));
 			}
@@ -68,6 +76,11 @@
 			removed.node.style.pointerEvents = removed.pointerEvents;
 		},
 
+		/**
+	  * Handle `click` event from map, i.e. forwards unhandled events
+	  * @param event
+	  * @private
+	  */
 		_handleClick: function (event) {
 
 			if (event.originalEvent._stopped) {

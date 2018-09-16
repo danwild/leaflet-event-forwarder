@@ -11,21 +11,19 @@ const map = L.map("map");
 const container = map.createPane('stack-container');
 
 const myEventForwarder = new L.eventForwarder({
-	// ref to leaflet map
-	map: map,
-	// see comments below
-	containerName: 'stack-container',
-	// enable events
-	events: {
-		click: true,
-		mousemove: true
-	},
-	// throttle options for mousemove events (same as underscore.js)
-	throttleMs: 100,
-	throttleOptions: {
-		leading: true,
-		trailing: false
-	}
+  // ref to leaflet map
+  map: map,
+  // events to forward
+  events: {
+    click: true,
+    mousemove: true
+  },
+  // throttle options for mousemove events (same as underscore.js)
+  throttleMs: 100,
+  throttleOptions: {
+  leading: true,
+  trailing: false
+}
 });
 
 // enable event forwarding
@@ -35,34 +33,9 @@ myEventForwarder.enable();
 myEventForwarder.disable();
 ```
 
-This plugin was built assuming a mildly non-standard layer structure, where layers are stacked using
-panes nested within a 'container' pane (this structure also provides greater control for z stacking
-layers which don't support zIndex, e.g. vectors that only support
-[bringToFront](https://leafletjs.com/reference-1.3.4.html#path-bringtofront)).
-
-```html
-<div class="leaflet-pane custom-container-pane">
-
-	<div class="leaflet-pane custom-pane">
-		<div class="leaflet-layer">
-			<canvas></canvas>
-		</div>
-	</div>
-
-	<div class="leaflet-pane custom-pane">
-        <div class="leaflet-layer">
-            <canvas></canvas>
-        </div>
-    </div>
-
-    <div class="leaflet-pane custom-pane">
-        <div class="leaflet-layer">
-            <svg></svg>
-        </div>
-    </div>
-
-</div>
-```
+## Shouts outs
+- Based largely on [this gist](https://gist.github.com/perliedman/84ce01954a1a43252d1b917ec925b3dd)
+by [perliedman](https://gist.github.com/perliedman)
 
 ## License
 Apache 2
