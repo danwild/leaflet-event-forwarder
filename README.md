@@ -21,9 +21,9 @@ const myEventForwarder = new L.eventForwarder({
   // throttle options for mousemove events (same as underscore.js)
   throttleMs: 100,
   throttleOptions: {
-  leading: true,
-  trailing: false
-}
+    leading: true,
+    trailing: false
+  }
 });
 
 // enable event forwarding
