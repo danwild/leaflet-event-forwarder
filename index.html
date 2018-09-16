@@ -53,6 +53,9 @@
 
 	const map = L.map("map");
 
+	// prepare a container to hold our z stackable layer panes
+	const container = map.createPane('stack-container');
+
 	const myEventForwarder = new L.eventForwarder({
 		map:    map,
 		events: {
