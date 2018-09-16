@@ -10,7 +10,9 @@ const EventForwarder = L.Class.extend({
 	},
 
 	enable: function() {
-		if (_options.events.click === true) L.DomEvent.on(_options.map, 'click', this._handleClick, this);
+		if (_options.events.click === true) {
+			L.DomEvent.on(_options.map, 'click', this._handleClick, this);
+		}
 		if (_options.events.mousemove === true) {
 			L.DomEvent.on(_options.map, 'mousemove', this._throttle(this._handleMouseMove, _options.throttleMs, _options.throttleOptions), this);
 		}
@@ -18,6 +20,7 @@ const EventForwarder = L.Class.extend({
 
 	disable: function() {
 		L.DomEvent.off(_options.map, 'click', this._handleClick, this);
+		L.DomEvent.off(_options.map, 'mousemove', this._throttle(this._handleMouseMove, _options.throttleMs, _options.throttleOptions), this);
 	},
 
 	/**
