@@ -7,7 +7,6 @@ const EventForwarder = L.Class.extend({
 
 	initialize: function (options) {
 		_options = options;
-		if (!_options.containerName) _options.containerName = 'overlay';
 	},
 
 	enable: function() {
