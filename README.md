@@ -2,14 +2,11 @@
 
 A plugin for leaflet `v1^`.
 
-Catches unhandled canvas layer events and re-dispatches them to the next pane in a container.
+Catches unhandled canvas layer events and re-dispatches them to the next layer in the stack.
 
 ## Example use:
 ```javascript
 const map = L.map("map");
-// prepare a container to hold our z stackable layer panes
-const container = map.createPane('stack-container');
-
 const myEventForwarder = new L.eventForwarder({
   // ref to leaflet map
   map: map,
